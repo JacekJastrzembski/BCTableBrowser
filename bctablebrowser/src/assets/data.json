@@ -1,0 +1,904 @@
+[
+  {
+    "name": "attachmentapi",
+    "columns": [
+      {
+        "name": "systemId",
+        "type": "Guid",
+        "isSynced": true
+      },
+      {
+        "name": "systemRowVersion",
+        "type": "Int64",
+        "isSynced": true
+      },
+      {
+        "name": "fileExtension",
+        "type": "String",
+        "isSynced": true
+      },
+      {
+        "name": "fileName",
+        "type": "String"
+      },
+      {
+        "name": "fileType",
+        "type": "String"
+      },
+      {
+        "name": "orgFileName",
+        "type": "String",
+        "isSynced": true
+      },
+      {
+        "name": "path",
+        "type": "String",
+        "isSynced": true
+      },
+      {
+        "name": "rowId",
+        "type": "Guid"
+      },
+      {
+        "name": "tableId",
+        "type": "Int32"
+      },
+      {
+        "name": "id",
+        "type": "Int32"
+      },
+      {
+        "name": "SystemModifiedAt",
+        "type": "DateTimeOffset"
+      }
+    ]
+  },
+  {
+    "name": "contact",
+    "columns": [
+      {
+        "name": "systemId",
+        "type": "Guid",
+        "isSynced": true
+      },
+      {
+        "name": "systemRowVersion",
+        "type": "Int64",
+        "isSynced": true
+      },
+      {
+        "name": "address",
+        "type": "String",
+        "isSynced": true
+      },
+      {
+        "name": "address2",
+        "type": "String"
+      },
+      {
+        "name": "calcdCurrentValueLCY",
+        "type": "Decimal"
+      },
+      {
+        "name": "city",
+        "type": "String"
+      },
+      {
+        "name": "comment",
+        "type": "Boolean"
+      },
+      {
+        "name": "companyName",
+        "type": "String",
+        "isSynced": true
+      },
+      {
+        "name": "companyNo",
+        "type": "String",
+        "isSynced": true
+      },
+      {
+        "name": "contactBusinessRelation",
+        "type": "contactBusinessRelation"
+      },
+      {
+        "name": "correspondenceType",
+        "type": "correspondenceType",
+        "isSynced": true
+      },
+      {
+        "name": "costLCY",
+        "type": "Decimal",
+        "isSynced": true
+      },
+      {
+        "name": "countryRegionCode",
+        "type": "String"
+      },
+      {
+        "name": "county",
+        "type": "String"
+      },
+      {
+        "name": "coupledToCRM",
+        "type": "Boolean"
+      },
+      {
+        "name": "coupledToDataverse",
+        "type": "Boolean"
+      },
+      {
+        "name": "currencyCode",
+        "type": "String"
+      },
+      {
+        "name": "dateOfLastInteraction",
+        "type": "Date"
+      },
+      {
+        "name": "durationMin",
+        "type": "Decimal"
+      },
+      {
+        "name": "eMail",
+        "type": "String"
+      },
+      {
+        "name": "eMail2",
+        "type": "String"
+      },
+      {
+        "name": "estimatedValueLCY",
+        "type": "Decimal"
+      },
+      {
+        "name": "excludeFromSegment",
+        "type": "Boolean"
+      },
+      {
+        "name": "extensionNo",
+        "type": "String"
+      },
+      {
+        "name": "externalID",
+        "type": "String"
+      },
+      {
+        "name": "faxNo",
+        "type": "String"
+      },
+      {
+        "name": "firstName",
+        "type": "String"
+      },
+      {
+        "name": "itiCountryRegionCode",
+        "type": "String"
+      },
+      {
+        "name": "itiVATRegistrationNo",
+        "type": "String"
+      },
+      {
+        "name": "itiVATRegNoOrigCountryCode",
+        "type": "String"
+      },
+      {
+        "name": "image",
+        "type": "Guid"
+      },
+      {
+        "name": "initials",
+        "type": "String"
+      },
+      {
+        "name": "jobTitle",
+        "type": "String"
+      },
+      {
+        "name": "languageCode",
+        "type": "String"
+      },
+      {
+        "name": "lastDateAttempted",
+        "type": "Date"
+      },
+      {
+        "name": "lastDateModified",
+        "type": "Date"
+      },
+      {
+        "name": "lastTimeModified",
+        "type": "String"
+      },
+      {
+        "name": "lookupContactNo",
+        "type": "String"
+      },
+      {
+        "name": "middleName",
+        "type": "String"
+      },
+      {
+        "name": "minor",
+        "type": "Boolean"
+      },
+      {
+        "name": "mobilePhoneNo",
+        "type": "String"
+      },
+      {
+        "name": "name",
+        "type": "String"
+      },
+      {
+        "name": "name2",
+        "type": "String"
+      },
+      {
+        "name": "nextTaskDate",
+        "type": "Date"
+      },
+      {
+        "name": "no",
+        "type": "String"
+      },
+      {
+        "name": "noSeries",
+        "type": "String"
+      },
+      {
+        "name": "noOfBusinessRelations",
+        "type": "Int32"
+      },
+      {
+        "name": "noOfIndustryGroups",
+        "type": "Int32"
+      },
+      {
+        "name": "noOfInteractions",
+        "type": "Int32"
+      },
+      {
+        "name": "noOfJobResponsibilities",
+        "type": "Int32"
+      },
+      {
+        "name": "noOfMailingGroups",
+        "type": "Int32"
+      },
+      {
+        "name": "noOfOpportunities",
+        "type": "Int32"
+      },
+      {
+        "name": "opportunityEntryExists",
+        "type": "Boolean"
+      },
+      {
+        "name": "organizationalLevelCode",
+        "type": "String"
+      },
+      {
+        "name": "pager",
+        "type": "String"
+      },
+      {
+        "name": "parentalConsentReceived",
+        "type": "Boolean"
+      },
+      {
+        "name": "phoneNo",
+        "type": "String"
+      },
+      {
+        "name": "postCode",
+        "type": "String"
+      },
+      {
+        "name": "privacyBlocked",
+        "type": "Boolean"
+      },
+      {
+        "name": "registrationNumber",
+        "type": "String"
+      },
+      {
+        "name": "salespersonCode",
+        "type": "String"
+      },
+      {
+        "name": "salutationCode",
+        "type": "String"
+      },
+      {
+        "name": "searchEMail",
+        "type": "String"
+      },
+      {
+        "name": "searchName",
+        "type": "String"
+      },
+      {
+        "name": "surname",
+        "type": "String"
+      },
+      {
+        "name": "systemCreatedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemCreatedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "systemModifiedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemModifiedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "taskEntryExists",
+        "type": "Boolean"
+      },
+      {
+        "name": "telexAnswerBack",
+        "type": "String"
+      },
+      {
+        "name": "telexNo",
+        "type": "String"
+      },
+      {
+        "name": "territoryCode",
+        "type": "String"
+      },
+      {
+        "name": "type",
+        "type": "contactType"
+      },
+      {
+        "name": "vatRegistrationNo",
+        "type": "String"
+      },
+      {
+        "name": "xrmId",
+        "type": "Guid"
+      },
+      {
+        "name": "EmailWOK",
+        "type": "String"
+      }
+    ]
+  },
+  {
+    "name": "contactBusinessRelationTab",
+    "columns": [
+      {
+        "name": "systemId",
+        "type": "Guid"
+      },
+      {
+        "name": "systemRowVersion",
+        "type": "Int64"
+      },
+      {
+        "name": "businessRelationCode",
+        "type": "String"
+      },
+      {
+        "name": "businessRelationDescription",
+        "type": "String"
+      },
+      {
+        "name": "contactName",
+        "type": "String"
+      },
+      {
+        "name": "contactNo",
+        "type": "String"
+      },
+      {
+        "name": "linkToTable",
+        "type": "contactBusinessRelationLinkToTable"
+      },
+      {
+        "name": "no",
+        "type": "String"
+      },
+      {
+        "name": "SystemModifiedAt",
+        "type": "DateTimeOffset"
+      }
+    ]
+  },
+  {
+    "name": "country",
+    "columns": [
+      {
+        "name": "systemId",
+        "type": "Guid"
+      },
+      {
+        "name": "addressFormat",
+        "type": "countryRegionAddressFormat"
+      },
+      {
+        "name": "code",
+        "type": "String"
+      },
+      {
+        "name": "contactAddressFormat",
+        "type": "String"
+      },
+      {
+        "name": "countyName",
+        "type": "String"
+      },
+      {
+        "name": "euCountryRegionCode",
+        "type": "String"
+      },
+      {
+        "name": "isoCode",
+        "type": "String"
+      },
+      {
+        "name": "isoNumericCode",
+        "type": "String"
+      },
+      {
+        "name": "intrastatCode",
+        "type": "String"
+      },
+      {
+        "name": "lastModifiedDateTime",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "name",
+        "type": "String"
+      },
+      {
+        "name": "systemCreatedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemCreatedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "systemModifiedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemModifiedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "vatScheme",
+        "type": "String"
+      },
+      {
+        "name": "systemRowVersion",
+        "type": "Int64"
+      }
+    ]
+  },
+  {
+    "name": "customerBankAccount",
+    "columns": [
+      {
+        "name": "systemId",
+        "type": "Guid"
+      },
+      {
+        "name": "systemRowVersion",
+        "type": "Int64"
+      },
+      {
+        "name": "address",
+        "type": "String"
+      },
+      {
+        "name": "address2",
+        "type": "String"
+      },
+      {
+        "name": "bankAccountNo",
+        "type": "String"
+      },
+      {
+        "name": "bankBranchNo",
+        "type": "String"
+      },
+      {
+        "name": "bankClearingCode",
+        "type": "String"
+      },
+      {
+        "name": "bankClearingStandard",
+        "type": "String"
+      },
+      {
+        "name": "city",
+        "type": "String"
+      },
+      {
+        "name": "code",
+        "type": "String"
+      },
+      {
+        "name": "contact",
+        "type": "String"
+      },
+      {
+        "name": "countryRegionCode",
+        "type": "String"
+      },
+      {
+        "name": "county",
+        "type": "String"
+      },
+      {
+        "name": "currencyCode",
+        "type": "String"
+      },
+      {
+        "name": "customerNo",
+        "type": "String"
+      },
+      {
+        "name": "eMail",
+        "type": "String"
+      },
+      {
+        "name": "faxNo",
+        "type": "String"
+      },
+      {
+        "name": "iban",
+        "type": "String"
+      },
+      {
+        "name": "itiFactoring",
+        "type": "Boolean"
+      },
+      {
+        "name": "languageCode",
+        "type": "String"
+      },
+      {
+        "name": "name",
+        "type": "String"
+      },
+      {
+        "name": "name2",
+        "type": "String"
+      },
+      {
+        "name": "phoneNo",
+        "type": "String"
+      },
+      {
+        "name": "postCode",
+        "type": "String"
+      },
+      {
+        "name": "swiftCode",
+        "type": "String"
+      },
+      {
+        "name": "systemCreatedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemCreatedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "systemModifiedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemModifiedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "telexAnswerBack",
+        "type": "String"
+      },
+      {
+        "name": "telexNo",
+        "type": "String"
+      },
+      {
+        "name": "transitNo",
+        "type": "String"
+      }
+    ]
+  },
+    {
+    "name": "employee",
+    "columns": [
+      {
+        "name": "no",
+        "type": "String"
+      },
+      {
+        "name": "systemRowVersion",
+        "type": "Int64"
+      },
+      {
+        "name": "address",
+        "type": "String"
+      },
+      {
+        "name": "address2",
+        "type": "String"
+      },
+      {
+        "name": "altAddressCode",
+        "type": "String"
+      },
+      {
+        "name": "altAddressEndDate",
+        "type": "Date"
+      },
+      {
+        "name": "altAddressStartDate",
+        "type": "Date"
+      },
+      {
+        "name": "applicationMethod",
+        "type": "applicationMethod"
+      },
+      {
+        "name": "balance",
+        "type": "Decimal"
+      },
+      {
+        "name": "bankAccountNo",
+        "type": "String"
+      },
+      {
+        "name": "bankBranchNo",
+        "type": "String"
+      },
+      {
+        "name": "birthDate",
+        "type": "Date"
+      },
+      {
+        "name": "cardNFCDecimal",
+        "type": "String"
+      },
+      {
+        "name": "cardNFCNumber",
+        "type": "String"
+      },
+      {
+        "name": "cardOptimaNumber",
+        "type": "String"
+      },
+      {
+        "name": "cardRFIDNumber",
+        "type": "String"
+      },
+      {
+        "name": "causeOfInactivityCode",
+        "type": "String"
+      },
+      {
+        "name": "city",
+        "type": "String"
+      },
+      {
+        "name": "comment",
+        "type": "Boolean"
+      },
+      {
+        "name": "companyEMail",
+        "type": "String"
+      },
+      {
+        "name": "costCenterCode",
+        "type": "String"
+      },
+      {
+        "name": "costObjectCode",
+        "type": "String"
+      },
+      {
+        "name": "countryRegionCode",
+        "type": "String"
+      },
+      {
+        "name": "county",
+        "type": "String"
+      },
+      {
+        "name": "eMail",
+        "type": "String"
+      },
+      {
+        "name": "employeePostingGroup",
+        "type": "String"
+      },
+      {
+        "name": "employmentDate",
+        "type": "Date"
+      },
+      {
+        "name": "emplymtContractCode",
+        "type": "String"
+      },
+      {
+        "name": "extension",
+        "type": "String"
+      },
+      {
+        "name": "faxNo",
+        "type": "String"
+      },
+      {
+        "name": "firstName",
+        "type": "String"
+      },
+      {
+        "name": "gender",
+        "type": "employeeGender"
+      },
+      {
+        "name": "globalDimension1Code",
+        "type": "String"
+      },
+      {
+        "name": "globalDimension2Code",
+        "type": "String"
+      },
+      {
+        "name": "groundsForTermCode",
+        "type": "String"
+      },
+      {
+        "name": "iban",
+        "type": "String"
+      },
+      {
+        "name": "image",
+        "type": "Guid"
+      },
+      {
+        "name": "inactiveDate",
+        "type": "Date"
+      },
+      {
+        "name": "initials",
+        "type": "String"
+      },
+      {
+        "name": "jobTitle",
+        "type": "String"
+      },
+      {
+        "name": "lastDateModified",
+        "type": "Date"
+      },
+      {
+        "name": "lastModifiedDateTime",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "lastName",
+        "type": "String"
+      },
+      {
+        "name": "managerNo",
+        "type": "String"
+      },
+      {
+        "name": "middleName",
+        "type": "String"
+      },
+      {
+        "name": "mobilePhoneNo",
+        "type": "String"
+      },
+      {
+        "name": "noSeries",
+        "type": "String"
+      },
+      {
+        "name": "pager",
+        "type": "String"
+      },
+      {
+        "name": "phoneNo",
+        "type": "String"
+      },
+      {
+        "name": "postCode",
+        "type": "String"
+      },
+      {
+        "name": "praId",
+        "type": "String"
+      },
+      {
+        "name": "privacyBlocked",
+        "type": "Boolean"
+      },
+      {
+        "name": "resourceNo",
+        "type": "String"
+      },
+      {
+        "name": "swiftCode",
+        "type": "String"
+      },
+      {
+        "name": "salespersPurchCode",
+        "type": "String"
+      },
+      {
+        "name": "searchName",
+        "type": "String"
+      },
+      {
+        "name": "socialSecurityNo",
+        "type": "String"
+      },
+      {
+        "name": "statisticsGroupCode",
+        "type": "String"
+      },
+      {
+        "name": "status",
+        "type": "employeeStatus"
+      },
+      {
+        "name": "systemCreatedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemCreatedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "systemId",
+        "type": "Guid"
+      },
+      {
+        "name": "systemModifiedAt",
+        "type": "DateTimeOffset"
+      },
+      {
+        "name": "systemModifiedBy",
+        "type": "Guid"
+      },
+      {
+        "name": "terminationDate",
+        "type": "Date"
+      },
+      {
+        "name": "title",
+        "type": "String"
+      },
+      {
+        "name": "totalAbsenceBase",
+        "type": "Decimal"
+      },
+      {
+        "name": "unionCode",
+        "type": "String"
+      },
+      {
+        "name": "unionMembershipNo",
+        "type": "String"
+      }
+    ]
+  }
+]
