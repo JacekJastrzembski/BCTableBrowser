@@ -9,6 +9,7 @@ interface Table {
 }
 
 export default function DataList () {
+    
   const navigate = useNavigate();
 
   const handleRowClick = (tableName: string) => {
@@ -37,7 +38,7 @@ export default function DataList () {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Typography marginBottom={'1rem'} color='black' variant="h5">Lista tabel</Typography>
+      <Typography marginBottom={'1rem'} color='textPrimary' variant="h5">Lista tabel</Typography>
       <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
         {/* <div style={{ width: '100%' }}> */}
         <DataGrid
@@ -46,7 +47,7 @@ export default function DataList () {
           //   paginationModel={{ page: 0, pageSize: 10 }}
           getRowId={(row) => row.name}
           onRowClick={(params) => handleRowClick(params.row.name)}
-          checkboxSelection
+          checkboxSelection={false}
         />
         {/* </div> */}
       </Stack>

@@ -17,7 +17,7 @@ export default function DataDetails () {
   const table = data.find((t: Table) => t.name === tableName);
 
   if (!table) {
-    return <Typography color='red'>Tabela nie znaleziona</Typography>;
+    return <Typography color='warning'>Tabela nie znaleziona</Typography>;
   }
 
   const columns: GridColDef[] = [
@@ -35,15 +35,15 @@ export default function DataDetails () {
 
     return (
             <Box sx={{ width: '100%' }}>
-                <Typography color='black' marginBottom={'1rem'} variant="h5">Szczegóły tabeli: {tableName}</Typography>
+                <Typography color='textPrimary' marginBottom={'1rem'} variant="h5">Szczegóły tabeli: {tableName}</Typography>
                 <Stack direction="row" spacing={1} sx={{ mb: 1 }}>   
-                    <div style={{ width: '100%', maxHeight: 800 }}>
+                    <div style={{ width: '100%', maxHeight: 750 }}>
                         <DataGrid
                             rows={table.columns}
                             columns={columns}
                             //   paginationModel={{ page: 0, pageSize: 11 }}
                             getRowId={(row) => row.name}
-                            checkboxSelection={true}
+                            checkboxSelection={false}
                         />
                     </div>
                 </Stack>
