@@ -6,6 +6,7 @@ import data from '../assets/data.json';
 interface Table {
   name: string;
   columns: Array<{ name: string; type: string; isSynced?: boolean }>;
+  isSynced?: boolean;
 }
 
 export default function DataList () {
@@ -29,27 +30,24 @@ export default function DataList () {
     },
   ];
 
-  const rows = data.map((table : Table) => ({
+  const rows = data.itemsToSave.map((table : Table) => ({
     id: table.name,
     name: table.name,
     columns: table.columns.length,
-    isSynced: table.columns.some(col => col.isSynced),
+    isSynced: table.isSynced
   }));
 
   return (
     <Box sx={{ width: '100%' }}>
       <Typography marginBottom={'1rem'} color='textPrimary' variant="h5">Lista tabel</Typography>
       <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-        {/* <div style={{ width: '100%' }}> */}
         <DataGrid
           rows={rows}
           columns={columns}
-          //   paginationModel={{ page: 0, pageSize: 10 }}
           getRowId={(row) => row.name}
           onRowClick={(params) => handleRowClick(params.row.name)}
           checkboxSelection={false}
         />
-        {/* </div> */}
       </Stack>
     </Box>
   );
