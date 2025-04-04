@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Button, Checkbox, Stack, Typography } from '@mui/material';
+import { Box, Button, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import data from '../assets/data.json';
 import { useState } from 'react';
@@ -28,9 +28,13 @@ export default function DataDetails() {
         <Box>
           <Typography>{params.value}</Typography>
           {params.row.configurationError && (
-            <Typography color="error" variant="body2">
-              {params.row.configurationError}
-            </Typography>
+            <Tooltip title={params.row.configurationError} placement="bottom" arrow>
+              <Typography color="error" variant="body2">
+                {params.row.configurationError.length > 45
+                  ? `${params.row.configurationError.slice(0, 45)}...`
+                  : params.row.configurationError}
+              </Typography>
+            </Tooltip>
           )}
         </Box>
       ),
