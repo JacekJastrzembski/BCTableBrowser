@@ -12,8 +12,9 @@ interface RouteParams extends Record<string, string | undefined> {
 export default function DataDetails() {
   const { tableName } = useParams<RouteParams>();
   const [editedSync, setEditedSync] = useState<Record<string, any>>({});
+  const [tables, setTables] = useState<Table[]>(data.itemsToSave);
 
-  const table = data.itemsToSave.find((t: Table) => t.name === tableName);
+  const table = tables.find((t: Table) => t.name === tableName);
   if (!table) {
     return <Typography color='warning'>Tabela nie znaleziona</Typography>;
   }
@@ -28,7 +29,7 @@ export default function DataDetails() {
         <Box>
           <Typography>{params.value}</Typography>
           {params.row.configurationError && (
-            <Tooltip title={params.row.configurationError} placement="bottom" arrow>
+            <Tooltip title={params.row.configurationError} placement="bottom" arrow={true} >
               <Typography color="error" variant="body2">
                 {params.row.configurationError.length > 45
                   ? `${params.row.configurationError.slice(0, 45)}...`
@@ -48,6 +49,7 @@ export default function DataDetails() {
         <Checkbox
           checked={editedSync[params.row.name]?.isSynced ?? params.value ?? false}
           onChange={(event) => handleCheckboxChange(event, params.row)}
+          color='secondary'
         />
       ),
     },
@@ -84,19 +86,11 @@ export default function DataDetails() {
   };
 
   const handleSyncChange = () => {
-    const syncedCount = table.columns.reduce((count, column) => {
-      const isSynced = editedSync[column.name]?.isSynced ?? column.isSynced ?? false;
-      return isSynced ? count + 1 : count;
-    }, 0);
-
-    const shouldSync = syncedCount <= table.columns.length / 2;
-
-    const updatedSync: Record<string, any> = {};
-    table.columns.forEach((column) => {
-      updatedSync[column.name] = { ...column, isSynced: shouldSync };
-    });
-
-    setEditedSync(updatedSync);
+    const updatedTables = tables.map((t) =>
+      t.name === tableName ? { ...t, isSynced: !t.isSynced } : t
+    );
+    setTables(updatedTables);
+    console.log('Zmieniono synchronizację tabeli:', updatedTables);
   };
 
   const handleReset = () => {
@@ -120,10 +114,11 @@ export default function DataDetails() {
       </Stack>
       <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
         <Stack direction="row" spacing={2}>
-          <Button type="button" variant="contained" onClick={handleSyncChange}>
-            Włącz/Wyłącz synchronizację
-          </Button>
-          <Button type="submit" variant="contained" color="success" onClick={handleSave}>
+          {table.isSynced 
+            ? <Button type="button" variant="contained" color='error' onClick={handleSyncChange}>Wyłącz synchronizację</Button>
+            : <Button type="button" variant="contained" color='success' onClick={handleSyncChange}>Włącz synchronizację</Button>
+          }
+          <Button type="submit" variant='contained' color="info" onClick={handleSave}>
             Zapisz
           </Button>
         </Stack>
