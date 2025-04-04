@@ -16,7 +16,23 @@ export default function MenuContent() {
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton component={Link} to={item.path} selected={index === 0}>
+            <ListItemButton
+              component={Link}
+              to={item.path}
+              selected={index === 0}
+              sx={{
+                borderRadius: '6px',
+                margin: 1,
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
+                '&:hover': {
+                  backgroundColor: 'primary.dark',
+                },
+                '&.Mui-selected': {
+                  backgroundColor: 'primary.dark',
+                },
+              }}
+            >
               <ListItemText
                 primary={item.text}
                 slotProps={{
