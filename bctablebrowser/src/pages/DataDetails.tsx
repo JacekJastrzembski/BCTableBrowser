@@ -3,12 +3,7 @@ import { Box, Button, Checkbox, Stack, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import data from '../assets/data.json';
 import { useState } from 'react';
-
-interface Table {
-  name: string;
-  columns: Array<{ name: string; type: string; isSynced?: boolean }>;
-  isSynced?: boolean;
-}
+import { Table } from './DataList';
 
 interface RouteParams extends Record<string, string | undefined> {
   tableName?: string;
@@ -24,7 +19,22 @@ export default function DataDetails() {
   }
 
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Nazwa kolumny', width: 350, minWidth: 200 },
+    {
+      field: 'name',
+      headerName: 'Nazwa kolumny',
+      width: 350,
+      minWidth: 200,
+      renderCell: (params) => (
+        <Box>
+          <Typography>{params.value}</Typography>
+          {params.row.configurationError && (
+            <Typography color="error" variant="body2">
+              {params.row.configurationError}
+            </Typography>
+          )}
+        </Box>
+      ),
+    },
     { field: 'type', headerName: 'Typ', width: 300, minWidth: 200 },
     {
       field: 'isSynced',
@@ -68,7 +78,6 @@ export default function DataDetails() {
     console.log(payload);
 
   };
-
 
   const handleSyncChange = () => {
     const syncedCount = table.columns.reduce((count, column) => {

@@ -3,9 +3,14 @@ import { Box, Checkbox, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import data from '../assets/data.json';
 
-interface Table {
+export interface Table {
   name: string;
-  columns: Array<{ name: string; type: string; isSynced?: boolean }>;
+  columns: Array<{ 
+    name: string; 
+    type: string; 
+    isSynced?: boolean; 
+    configurationError?: string | undefined; 
+  }>;
   isSynced?: boolean;
 }
 

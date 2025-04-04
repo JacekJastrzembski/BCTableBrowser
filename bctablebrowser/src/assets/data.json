@@ -78,7 +78,8 @@
       },
       {
         "name": "calcdCurrentValueLCY",
-        "type": "Decimal"
+        "type": "Decimal",
+        "configurationError": "błąd w konfiguracji"
       },
       {
         "name": "city",
