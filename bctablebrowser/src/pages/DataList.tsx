@@ -43,18 +43,22 @@ export default function DataList () {
   }));
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Typography marginBottom={'1rem'} color='textPrimary' variant="h5">Lista tabel</Typography>
-      <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          getRowId={(row) => row.name}
-          onRowClick={(params) => handleRowClick(params.row.name)}
-          checkboxSelection={false}
-        />
-      </Stack>
-    </Box>
+    <div className="container" style={{ marginLeft: '1rem' }}>
+      <Box sx={{ width: '100%' }}>
+        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} color='textPrimary' variant="h5">
+          Lista tabel
+        </Typography>
+        <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            getRowId={(row) => row.name}
+            onRowClick={(params) => handleRowClick(params.row.name)}
+            checkboxSelection={false}
+          />
+        </Stack>
+      </Box>
+    </div>
   );
 };
 

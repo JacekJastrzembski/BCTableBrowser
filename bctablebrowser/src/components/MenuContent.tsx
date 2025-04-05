@@ -4,7 +4,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
-import { Divider } from "@mui/material";
 
 const mainListItems = [
   { text: 'Lista tabel', path: '/' },
@@ -40,7 +39,6 @@ export default function MenuContent() {
                 }}
               />
             </ListItemButton>
-            <Divider />
           </ListItem>
         ))}
       </List>

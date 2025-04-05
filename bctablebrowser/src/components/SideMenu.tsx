@@ -4,8 +4,8 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import MenuContent from './MenuContent';
 import IconButton from '@mui/material/IconButton';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import { DarkMode } from '@mui/icons-material';
 
 interface SideMenuProps {
   darkMode: boolean;
@@ -36,15 +36,18 @@ export default function SideMenu({ darkMode, toggleDarkMode }: SideMenuProps) {
         },
       }}
     >
+      
       <Box
         sx={{
           display: 'flex',
           mt: 'calc(var(--template-frame-height, 0px) + 4px)',
           p: 1.5,
+          height: '50px',
+          // placeSelf:'self-end'
         }}
       >
         <IconButton onClick={toggleDarkMode}>
-          {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          {darkMode ? <LightModeIcon /> : <DarkMode />}
         </IconButton>
       </Box>
       <Divider />

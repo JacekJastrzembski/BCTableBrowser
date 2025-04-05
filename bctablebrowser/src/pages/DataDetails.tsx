@@ -98,34 +98,36 @@ export default function DataDetails() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Typography color='textPrimary' marginBottom={'1rem'} variant="h5">
-        Szczegóły tabeli: {tableName}
-      </Typography>
-      <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-        <div style={{ width: '100%', maxHeight: 720 }}>
-          <DataGrid
-            rows={table.columns}
-            columns={columns}
-            getRowId={(row) => row.name}
-            checkboxSelection={false}
-          />
-        </div>
-      </Stack>
-      <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
-        <Stack direction="row" spacing={2}>
-          {table.isSynced 
-            ? <Button type="button" variant="contained" color='error' onClick={handleSyncChange}>Wyłącz synchronizację</Button>
-            : <Button type="button" variant="contained" color='success' onClick={handleSyncChange}>Włącz synchronizację</Button>
-          }
-          <Button type="submit" variant='contained' color="info" onClick={handleSave}>
-            Zapisz
+    <div className="container" style={{ marginLeft: '1rem' }}>
+      <Box sx={{ width: '100%' }}>
+        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} variant="h5">
+          Szczegóły tabeli: {tableName}
+        </Typography>
+        <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+          <div style={{ width: '100%', maxHeight: '74dvh' }}>
+            <DataGrid
+              rows={table.columns}
+              columns={columns}
+              getRowId={(row) => row.name}
+              checkboxSelection={false}
+            />
+          </div>
+        </Stack>
+        <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
+          <Stack direction="row" spacing={2}>
+            {table.isSynced
+              ? <Button type="button" variant="contained" color='error' onClick={handleSyncChange}>Wyłącz synchronizację</Button>
+              : <Button type="button" variant="contained" color='success' onClick={handleSyncChange}>Włącz synchronizację</Button>
+            }
+            <Button type="submit" variant='contained' color="info" onClick={handleSave}>
+              Zapisz
+            </Button>
+          </Stack>
+          <Button type="button" variant="text" color="warning" onClick={handleReset}>
+            Przywróć poprzednie wartości
           </Button>
         </Stack>
-        <Button type="button" variant="text" color="warning" onClick={handleReset}>
-          Przywróć poprzednie wartości
-        </Button>
-      </Stack>
-    </Box>
+      </Box>
+    </div>
   );
 }

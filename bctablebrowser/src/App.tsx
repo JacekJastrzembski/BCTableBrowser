@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DataList from './pages/DataList';
 import DataDetails from './pages/DataDetails'
 import SideMenu from './components/SideMenu';
-import { Box, CssBaseline, ThemeProvider } from '@mui/material';
+import { Box, CssBaseline, Divider, ThemeProvider } from '@mui/material';
 import { useState } from 'react';
 import { lightTheme, darkTheme } from './theme';
 
@@ -25,13 +25,21 @@ function App() {
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <CssBaseline />
         <Router>
-          <Box sx={{ display: 'flex' }}>
-            <SideMenu darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-            <Box sx={{ flexGrow: 2, p: 3 }}>
-              <Routes>
-                <Route path="/" element={<DataList />} />
-                <Route path="/details/:tableName" element={<DataDetails />} />
-              </Routes>
+          <Divider sx={{ position: 'absolute', top: 0, height: '55px', width: '100vw' }} />
+          <Box
+            sx={{
+              display: 'flex',
+              mt: '35px',
+            }}
+          >
+            <Box sx={{ display: 'flex' }}>
+              <SideMenu darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+              <Box sx={{ flexGrow: 2, p: 3 }}>
+                <Routes>
+                  <Route path="/" element={<DataList />} />
+                  <Route path="/details/:tableName" element={<DataDetails />} />
+                </Routes>
+              </Box>
             </Box>
           </Box>
         </Router>
