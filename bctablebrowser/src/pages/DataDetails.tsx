@@ -1,22 +1,33 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Box, Button, Checkbox, Stack, Tooltip, Typography } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import data from '../assets/data.json';
+import { Alert, Box, Button, Checkbox, Snackbar, Stack, Tooltip, Typography } from '@mui/material';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Table } from './DataList';
+import { sendTableDataToServer } from '../api/api';
 
 interface RouteParams extends Record<string, string | undefined> {
   tableName?: string;
 }
 
 export default function DataDetails() {
+  const navigate = useNavigate();
   const { tableName } = useParams<RouteParams>();
+  const location = useLocation();
+  const locTable = location.state as { table: Table };
+  const [table, setTable] = useState<Table>(locTable.table);
   const [editedSync, setEditedSync] = useState<Record<string, any>>({});
-  const [tables, setTables] = useState<Table[]>(data.itemsToSave);
-
-  const table = tables.find((t: Table) => t.name === tableName);
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    type: 'success' | 'error';
+    message: string;
+  }>({
+    open: false,
+    type: 'success',
+    message: '',
+  });
+// console.log('Tabela:', table);
   if (!table) {
-    return <Typography color='warning'>Tabela nie znaleziona</Typography>;
+    return <Typography color="error">Tabela nie została przekazana.</Typography>;
   }
 
   const columns: GridColDef[] = [
@@ -29,7 +40,7 @@ export default function DataDetails() {
         <Box>
           <Typography>{params.value}</Typography>
           {params.row.configurationError && (
-            <Tooltip title={params.row.configurationError} placement="bottom" arrow={true} >
+            <Tooltip title={params.row.configurationError} placement="bottom" arrow={true}>
               <Typography color="error" variant="body2">
                 {params.row.configurationError.length > 45
                   ? `${params.row.configurationError.slice(0, 45)}...`
@@ -49,7 +60,7 @@ export default function DataDetails() {
         <Checkbox
           checked={editedSync[params.row.name]?.isSynced ?? params.value ?? false}
           onChange={(event) => handleCheckboxChange(event, params.row)}
-          color='secondary'
+          color="secondary"
         />
       ),
     },
@@ -63,38 +74,81 @@ export default function DataDetails() {
   };
 
   const handleSave = async () => {
-    const updatedColumns = Object.values(editedSync);
-    console.log('Zapisz:', updatedColumns);
+    const updatedColumns = table.columns.map((column) =>
+      editedSync[column.name] ? editedSync[column.name] : column
+    );
 
-    if (updatedColumns.length === 0) {
-      console.log('Brak zmian do zapisania.');
+    if (Object.keys(editedSync).length === 0) {
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: 'Brak zmian do zapisania.',
+      });
       return;
     }
-
-    const allColumnsSynced = table.columns.every((column) => {
-      const updatedColumn = updatedColumns.find((uc) => uc.name === column.name);
-      return updatedColumn ? updatedColumn.isSynced : column.isSynced ?? false;
-    });
 
     const payload = {
       name: table.name,
       columns: updatedColumns,
-      isSynced: allColumnsSynced,
+      isSynced: table.isSynced,
     };
-    console.log(payload);
 
+    try {
+      await sendTableDataToServer(table.name, payload);
+      // console.log('Dane zapisane pomyślnie!');
+      setSnackbar({
+        open: true,
+        type: 'success',
+        message: 'Dane zapisane pomyślnie!',
+      });
+      setTable({ ...table, columns: updatedColumns });
+      setEditedSync({});
+      setTimeout(() => {
+        navigate('/tables');
+      }, 300);
+    } catch (error) {
+      console.error('Nie udało się zapisać danych:', error);
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: 'Nie udało się zapisać danych.',
+      });
+    }
   };
 
-  const handleSyncChange = () => {
-    const updatedTables = tables.map((t) =>
-      t.name === tableName ? { ...t, isSynced: !t.isSynced } : t
-    );
-    setTables(updatedTables);
-    console.log('Zmieniono synchronizację tabeli:', updatedTables);
+  const handleSyncChange = async () => {
+    const updatedTable = { ...table, isSynced: !table.isSynced };
+
+    try {
+      await sendTableDataToServer(table.name, updatedTable);
+      // console.log('Synchronizacja tabeli zmieniona pomyślnie!');
+      setTable(updatedTable);
+      setSnackbar({
+        open: true,
+        type: 'success',
+        message: 'Synchronizacja tabeli zmieniona pomyślnie!',
+      });
+    } catch (error) {
+      console.error('Nie udało się zmienić synchronizacji tabeli:', error);
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: 'Nie udało się zmienić synchronizacji tabeli.',
+      });
+    }
   };
+
 
   const handleReset = () => {
     setEditedSync({});
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
+
+  const handleSnackbarClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
   return (
@@ -115,11 +169,16 @@ export default function DataDetails() {
         </Stack>
         <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
           <Stack direction="row" spacing={2}>
-            {table.isSynced
-              ? <Button type="button" variant="contained" color='error' onClick={handleSyncChange}>Wyłącz synchronizację</Button>
-              : <Button type="button" variant="contained" color='success' onClick={handleSyncChange}>Włącz synchronizację</Button>
-            }
-            <Button type="submit" variant='contained' color="info" onClick={handleSave}>
+            {table.isSynced ? (
+              <Button type="button" variant="contained" color="error" onClick={handleSyncChange}>
+                Wyłącz synchronizację
+              </Button>
+            ) : (
+              <Button type="button" variant="contained" color="success" onClick={handleSyncChange}>
+                Włącz synchronizację
+              </Button>
+            )}
+            <Button type="submit" variant="contained" color="info" onClick={handleSave}>
               Zapisz
             </Button>
           </Stack>
@@ -128,6 +187,16 @@ export default function DataDetails() {
           </Button>
         </Stack>
       </Box>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
