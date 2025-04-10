@@ -1,5 +1,5 @@
 {
-  "itemsToSave": [
+  "items": [
     {
       "name": "attachmentapi",
       "columns": [
@@ -52,9 +52,7 @@
           "name": "SystemModifiedAt",
           "type": "DateTimeOffset"
         }
-      ],
-      "id": "08ff",
-      "isSynced": false
+      ]
     },
     {
       "name": "contact",
@@ -375,8 +373,7 @@
           "name": "EmailWOK",
           "type": "String"
         }
-      ],
-      "id": "3046"
+      ]
     },
     {
       "name": "contactBusinessRelationTab",
@@ -417,9 +414,7 @@
           "name": "SystemModifiedAt",
           "type": "DateTimeOffset"
         }
-      ],
-      "id": "5646",
-      "isSynced": true
+      ]
     },
     {
       "name": "country",
@@ -492,8 +487,7 @@
           "name": "systemRowVersion",
           "type": "Int64"
         }
-      ],
-      "id": "3b43"
+      ]
     },
     {
       "name": "customerBankAccount",
@@ -626,8 +620,7 @@
           "name": "transitNo",
           "type": "String"
         }
-      ],
-      "id": "56b8"
+      ]
     },
     {
       "name": "employee",
@@ -908,8 +901,7 @@
           "name": "unionMembershipNo",
           "type": "String"
         }
-      ],
-      "id": "5a41"
+      ]
     }
   ]
 }

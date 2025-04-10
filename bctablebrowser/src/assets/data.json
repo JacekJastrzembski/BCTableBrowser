@@ -1,5 +1,4 @@
-{
-  "itemsToSave": [
+[
   {
     "name": "attachmentapi",
     "columns": [
@@ -904,4 +903,3 @@
     ]
   }
 ]
-}

@@ -2,20 +2,16 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Checkbox, Snackbar, Stack, Tooltip, Typography } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Table } from './DataList';
-import { sendTableDataToServer } from '../api/api';
-
-interface RouteParams extends Record<string, string | undefined> {
-  tableName?: string;
-}
+import { ItemsToSave, saveSynchronizableTables, Table, UpdateTable } from '../api/api';
 
 export default function DataDetails() {
   const navigate = useNavigate();
-  const { tableName } = useParams<RouteParams>();
+  const { tableName } = useParams();
   const location = useLocation();
   const locTable = location.state as { table: Table };
   const [table, setTable] = useState<Table>(locTable.table);
   const [editedSync, setEditedSync] = useState<Record<string, any>>({});
+  const [isTableSyncChanged, setIsTableSyncChanged] = useState<boolean | null>(null);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     type: 'success' | 'error';
@@ -25,7 +21,7 @@ export default function DataDetails() {
     type: 'success',
     message: '',
   });
-// console.log('Tabela:', table);
+
   if (!table) {
     return <Typography color="error">Tabela nie została przekazana.</Typography>;
   }
@@ -73,12 +69,19 @@ export default function DataDetails() {
     }));
   };
 
+  const handleSyncToggle = () => {
+    setIsTableSyncChanged((prev) => (prev === null ? !table.isSynced : !prev));
+  };
+
   const handleSave = async () => {
     const updatedColumns = table.columns.map((column) =>
       editedSync[column.name] ? editedSync[column.name] : column
     );
 
-    if (Object.keys(editedSync).length === 0) {
+    const hasColumnChanges = Object.keys(editedSync).length > 0;
+    const hasTableSyncChange = isTableSyncChanged !== null;
+
+    if (!hasColumnChanges && !hasTableSyncChange) {
       setSnackbar({
         open: true,
         type: 'error',
@@ -87,22 +90,26 @@ export default function DataDetails() {
       return;
     }
 
-    const payload = {
+    const tableData: ItemsToSave = {
       name: table.name,
       columns: updatedColumns,
-      isSynced: table.isSynced,
+      isSynced: hasTableSyncChange ? isTableSyncChanged : table.isSynced,
+    };
+    
+    const payload: UpdateTable = {
+      itemsToSave: [tableData],
     };
 
     try {
-      await sendTableDataToServer(table.name, payload);
-      // console.log('Dane zapisane pomyślnie!');
+      const updatedTable = await saveSynchronizableTables(payload);
       setSnackbar({
         open: true,
         type: 'success',
         message: 'Dane zapisane pomyślnie!',
       });
-      setTable({ ...table, columns: updatedColumns });
+      setTable(updatedTable);
       setEditedSync({});
+      setIsTableSyncChanged(null);
       setTimeout(() => {
         navigate('/tables');
       }, 300);
@@ -116,31 +123,9 @@ export default function DataDetails() {
     }
   };
 
-  const handleSyncChange = async () => {
-    const updatedTable = { ...table, isSynced: !table.isSynced };
-
-    try {
-      await sendTableDataToServer(table.name, updatedTable);
-      // console.log('Synchronizacja tabeli zmieniona pomyślnie!');
-      setTable(updatedTable);
-      setSnackbar({
-        open: true,
-        type: 'success',
-        message: 'Synchronizacja tabeli zmieniona pomyślnie!',
-      });
-    } catch (error) {
-      console.error('Nie udało się zmienić synchronizacji tabeli:', error);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: 'Nie udało się zmienić synchronizacji tabeli.',
-      });
-    }
-  };
-
-
   const handleReset = () => {
     setEditedSync({});
+    setIsTableSyncChanged(null);
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
@@ -152,7 +137,7 @@ export default function DataDetails() {
   };
 
   return (
-    <div className="container" style={{ marginLeft: '1rem' }}>
+    <div className="container" style={{ marginLeft: '1rem', padding: '1rem' }}>
       <Box sx={{ width: '100%' }}>
         <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} variant="h5">
           Szczegóły tabeli: {tableName}
@@ -170,11 +155,11 @@ export default function DataDetails() {
         <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
           <Stack direction="row" spacing={2}>
             {table.isSynced ? (
-              <Button type="button" variant="contained" color="error" onClick={handleSyncChange}>
+              <Button type="button" variant="contained" color="error" onClick={handleSyncToggle}>
                 Wyłącz synchronizację
               </Button>
             ) : (
-              <Button type="button" variant="contained" color="success" onClick={handleSyncChange}>
+              <Button type="button" variant="contained" color="success" onClick={handleSyncToggle}>
                 Włącz synchronizację
               </Button>
             )}

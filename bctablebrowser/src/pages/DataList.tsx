@@ -1,19 +1,9 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box, Checkbox, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-// import data from '../assets/data.json';
+import localData from '../assets/data.json';
 import { useEffect, useState } from 'react';
-
-export interface Table {
-  name: string;
-  columns: Array<{ 
-    name: string; 
-    type: string; 
-    isSynced?: boolean; 
-    configurationError?: string | undefined; 
-  }>;
-  isSynced?: boolean;
-}
+import { Table, getSynchronizableTables } from '../api/api';
 
 export default function DataList () {
     
@@ -21,21 +11,26 @@ export default function DataList () {
   const [loading, setLoading] = useState(true);
   const [tables, setTables] = useState<Table[]>([]);
 
+  const useLocalData = true;
+
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = async () => {
     try {
-      const response = await fetch('http://localhost:3001/itemsToSave');
-      const data = await response.json();
-      setTables(data);
+      if (useLocalData) {
+        setTables(localData);
+      } else {
+        const data = await getSynchronizableTables();
+        setTables(data);
+      }
     } catch (error) {
-      console.error('Błąd podczas pobierania danych z API:', error);
+      console.error('Błąd podczas pobierania danych:', error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const handleRowClick = (table: Table) => {
     navigate(`/details/${table.name}`, { state: { table } });
@@ -55,9 +50,8 @@ export default function DataList () {
   ];
 
   const rows = tables.map((table : Table) => ({
-    id: table.name,
     name: table.name,
-    columns: table.columns.length,
+    columns: table.columns ? table.columns.length : 0,
     isSynced: table.isSynced
   }));
     
@@ -66,7 +60,7 @@ export default function DataList () {
   }
 
   return (
-    <div className="container" style={{ marginLeft: '1rem' }}>
+    <div className="container" style={{ marginLeft: '1rem', padding: '1rem' }}>
       <Box sx={{ width: '100%' }}>
         <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} color='textPrimary' variant="h5">
           Lista tabel
