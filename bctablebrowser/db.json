@@ -52,9 +52,11 @@
           "name": "SystemModifiedAt",
           "type": "DateTimeOffset"
         }
-      ]
+      ],
+      "id": "278c"
     },
     {
+      "id": "5c71",
       "name": "contact",
       "columns": [
         {
@@ -74,16 +76,19 @@
         },
         {
           "name": "address2",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "calcdCurrentValueLCY",
           "type": "Decimal",
-          "configurationError": "configurationErrorconfigurationErrorconfigurationErrorconfigurationError"
+          "configurationError": "configurationErrorconfigurationErrorconfigurationErrorconfigurationError",
+          "isSynced": false
         },
         {
           "name": "city",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "comment",
@@ -373,9 +378,11 @@
           "name": "EmailWOK",
           "type": "String"
         }
-      ]
+      ],
+      "isSynced": false
     },
     {
+      "id": "34b7",
       "name": "contactBusinessRelationTab",
       "columns": [
         {
@@ -400,7 +407,8 @@
         },
         {
           "name": "contactNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "linkToTable",
@@ -414,9 +422,11 @@
           "name": "SystemModifiedAt",
           "type": "DateTimeOffset"
         }
-      ]
+      ],
+      "isSynced": true
     },
     {
+      "id": "2cc7",
       "name": "country",
       "columns": [
         {
@@ -437,7 +447,8 @@
         },
         {
           "name": "countyName",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "euCountryRegionCode",
@@ -487,7 +498,8 @@
           "name": "systemRowVersion",
           "type": "Int64"
         }
-      ]
+      ],
+      "isSynced": false
     },
     {
       "name": "customerBankAccount",
@@ -620,7 +632,8 @@
           "name": "transitNo",
           "type": "String"
         }
-      ]
+      ],
+      "id": "4505"
     },
     {
       "name": "employee",
@@ -901,7 +914,8 @@
           "name": "unionMembershipNo",
           "type": "String"
         }
-      ]
+      ],
+      "id": "d66e"
     }
   ]
 }

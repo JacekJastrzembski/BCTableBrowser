@@ -2,7 +2,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Checkbox, Snackbar, Stack, Tooltip, Typography } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { ItemsToSave, saveSynchronizableTables, Table, UpdateTable } from '../api/api';
+import { ItemsToSave, saveSynchronizableTables, Table, UpdateTable, saveJsonTableData } from '../api/api';
 
 export default function DataDetails() {
   const navigate = useNavigate();
@@ -11,7 +11,6 @@ export default function DataDetails() {
   const locTable = location.state as { table: Table };
   const [table, setTable] = useState<Table>(locTable.table);
   const [editedSync, setEditedSync] = useState<Record<string, any>>({});
-  const [isTableSyncChanged, setIsTableSyncChanged] = useState<boolean | null>(null);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     type: 'success' | 'error';
@@ -21,6 +20,7 @@ export default function DataDetails() {
     type: 'success',
     message: '',
   });
+  const useJsonData = import.meta.env.VITE_USE_JSON_DATA === 'true' ? true : false;
 
   if (!table) {
     return <Typography color="error">Tabela nie została przekazana.</Typography>;
@@ -69,19 +69,14 @@ export default function DataDetails() {
     }));
   };
 
-  const handleSyncToggle = () => {
-    setIsTableSyncChanged((prev) => (prev === null ? !table.isSynced : !prev));
-  };
-
   const handleSave = async () => {
     const updatedColumns = table.columns.map((column) =>
       editedSync[column.name] ? editedSync[column.name] : column
     );
 
     const hasColumnChanges = Object.keys(editedSync).length > 0;
-    const hasTableSyncChange = isTableSyncChanged !== null;
 
-    if (!hasColumnChanges && !hasTableSyncChange) {
+    if (!hasColumnChanges) {
       setSnackbar({
         open: true,
         type: 'error',
@@ -93,26 +88,33 @@ export default function DataDetails() {
     const tableData: ItemsToSave = {
       name: table.name,
       columns: updatedColumns,
-      isSynced: hasTableSyncChange ? isTableSyncChanged : table.isSynced,
+      isSynced: table.isSynced,
     };
-    
+
     const payload: UpdateTable = {
       itemsToSave: [tableData],
     };
 
     try {
-      const updatedTable = await saveSynchronizableTables(payload);
+      if (!useJsonData) {
+        const updatedTable = await saveSynchronizableTables(payload);
+        setTable(updatedTable);
+      } else {
+        if (!table.id) {
+          throw new Error('Table ID is undefined.');
+        }
+        const updatedTable = await saveJsonTableData(table.id, tableData);
+        setTable(updatedTable);
+      }
       setSnackbar({
         open: true,
         type: 'success',
         message: 'Dane zapisane pomyślnie!',
       });
-      setTable(updatedTable);
       setEditedSync({});
-      setIsTableSyncChanged(null);
       setTimeout(() => {
         navigate('/tables');
-      }, 300);
+      }, 500);
     } catch (error) {
       console.error('Nie udało się zapisać danych:', error);
       setSnackbar({
@@ -123,9 +125,49 @@ export default function DataDetails() {
     }
   };
 
+  const handleSyncToggle = async () => {
+    const newSync = !table.isSynced;
+
+    const tableData: ItemsToSave = {
+      name: table.name,
+      columns: table.columns,
+      isSynced: newSync,
+    };
+
+    const payload: UpdateTable = {
+      itemsToSave: [tableData],
+    };
+
+    try {
+      if (!useJsonData) {
+        const updatedTable = await saveSynchronizableTables(payload);
+        setTable(updatedTable);
+      } else {
+        if (!table.id) {
+          throw new Error('Table ID is undefined.');
+        }
+        const updatedTable = await saveJsonTableData(table.id, tableData);
+        setTable(updatedTable);
+      }
+      setSnackbar({
+        open: true,
+        type: 'success',
+        message: newSync
+          ? `Udało się włączyć synchronizację tabelki ${table.name}!`
+          : `Udało się wyłączyć synchronizację tabelki ${table.name}!`
+      });
+    } catch (error) {
+      console.error('Nie udało się zapisać synchronizacji:', error);
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: 'Nie udało się zapisać synchronizacji.',
+      });
+    }
+  };
+
   const handleReset = () => {
     setEditedSync({});
-    setIsTableSyncChanged(null);
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
@@ -137,12 +179,12 @@ export default function DataDetails() {
   };
 
   return (
-    <div className="container" style={{ marginLeft: '1rem', padding: '1rem' }}>
+    <div className="container" style={{ marginLeft: '1rem', padding: '1rem', paddingTop: '0rem' }}>
       <Box sx={{ width: '100%' }}>
         <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} variant="h5">
-          Szczegóły tabeli: {tableName}
+          Szczegóły tabeli: <Typography component="span" variant="h5" sx={{ fontWeight: "bold", color: (theme) => theme.palette.secondary.main }}>{tableName}</Typography>
         </Typography>
-        <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+        <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '1rem' }}>
           <div style={{ width: '100%', maxHeight: '74dvh' }}>
             <DataGrid
               rows={table.columns}
@@ -154,20 +196,40 @@ export default function DataDetails() {
         </Stack>
         <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
           <Stack direction="row" spacing={2}>
-            {table.isSynced ? (
-              <Button type="button" variant="contained" color="error" onClick={handleSyncToggle}>
+            {table.isSynced 
+            ? (
+              <Button
+                sx={{ border: 1, fontWeight: "bold", }}
+                type="button"
+                variant="contained"
+                color="error"
+                onClick={handleSyncToggle}
+              >
                 Wyłącz synchronizację
               </Button>
-            ) : (
-              <Button type="button" variant="contained" color="success" onClick={handleSyncToggle}>
+            ) 
+            : (
+              <Button
+                sx={{ border: 1, fontWeight: "bold" }}
+                type="button"
+                variant="contained"
+                color="success"
+                onClick={handleSyncToggle}
+              >
                 Włącz synchronizację
               </Button>
             )}
-            <Button type="submit" variant="contained" color="info" onClick={handleSave}>
+            <Button
+              sx={{ border: 1, fontWeight: "bold" }}
+              type="submit"
+              variant="contained"
+              color="info"
+              onClick={handleSave}
+            >
               Zapisz
             </Button>
           </Stack>
-          <Button type="button" variant="text" color="warning" onClick={handleReset}>
+          <Button sx={{ fontWeight: "bold" }} type="button" variant="text" color="warning" onClick={handleReset}>
             Przywróć poprzednie wartości
           </Button>
         </Stack>
@@ -178,7 +240,28 @@ export default function DataDetails() {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{ width: '100%' }}>
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.type}
+          sx={(theme) => ({
+            width: '100%',
+            // fontWeight: 'bold',
+            backgroundColor:
+              snackbar.type === 'success'
+                ? theme.palette.success.main
+                : theme.palette.error.main,
+            color:
+              snackbar.type === 'success'
+                ? theme.palette.success.contrastText
+                : theme.palette.error.contrastText,
+            '& .MuiAlert-icon': {
+              color:
+                snackbar.type === 'success'
+                  ? theme.palette.success.contrastText
+                  : theme.palette.error.contrastText,
+            },
+          })}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

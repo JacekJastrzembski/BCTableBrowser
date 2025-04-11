@@ -1,9 +1,9 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box, Checkbox, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import localData from '../assets/data.json';
+// import localData from '../assets/data.json';
 import { useEffect, useState } from 'react';
-import { Table, getSynchronizableTables } from '../api/api';
+import { Table, getJsonData, getSynchronizableTables } from '../api/api';
 
 export default function DataList () {
     
@@ -11,7 +11,7 @@ export default function DataList () {
   const [loading, setLoading] = useState(true);
   const [tables, setTables] = useState<Table[]>([]);
 
-  const useLocalData = true;
+  const useJsonData = import.meta.env.VITE_USE_JSON_DATA === 'true' ? true : false;
 
   useEffect(() => {
     loadData();
@@ -19,8 +19,9 @@ export default function DataList () {
 
   const loadData = async () => {
     try {
-      if (useLocalData) {
-        setTables(localData);
+      if (useJsonData) {
+        const jsonData = await getJsonData();
+        setTables(jsonData);
       } else {
         const data = await getSynchronizableTables();
         setTables(data);
@@ -60,12 +61,12 @@ export default function DataList () {
   }
 
   return (
-    <div className="container" style={{ marginLeft: '1rem', padding: '1rem' }}>
+    <div className="container" style={{ marginLeft: '1rem', padding: '1rem', paddingTop: '0rem' }}>
       <Box sx={{ width: '100%' }}>
         <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} color='textPrimary' variant="h5">
           Lista tabel
         </Typography>
-        <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+        <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '1rem' }}>
           <DataGrid
             rows={rows}
             columns={columns}
