@@ -3,7 +3,8 @@ import { Box, Checkbox, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 // import localData from '../assets/data.json';
 import { useEffect, useState } from 'react';
-import { Table, getJsonData, getSynchronizableTables } from '../api/api';
+import { Table} from '../api/api';
+import { TableService } from '../api/TableService';
 
 export default function DataList () {
     
@@ -11,21 +12,14 @@ export default function DataList () {
   const [loading, setLoading] = useState(true);
   const [tables, setTables] = useState<Table[]>([]);
 
-  const useJsonData = import.meta.env.VITE_USE_JSON_DATA === 'true' ? true : false;
-
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = async () => {
     try {
-      if (useJsonData) {
-        const jsonData = await getJsonData();
-        setTables(jsonData);
-      } else {
-        const data = await getSynchronizableTables();
-        setTables(data);
-      }
+      const data = await TableService.getTables();
+      setTables(data);
     } catch (error) {
       console.error('Błąd podczas pobierania danych:', error);
     } finally {
@@ -53,7 +47,7 @@ export default function DataList () {
   const rows = tables.map((table : Table) => ({
     name: table.name,
     columns: table.columns ? table.columns.length : 0,
-    isSynced: table.isSynced
+    isSynced: table.isSynced,
   }));
     
   if (loading){
@@ -63,7 +57,7 @@ export default function DataList () {
   return (
     <div className="container" style={{ marginLeft: '1rem', padding: '1rem', paddingTop: '0rem' }}>
       <Box sx={{ width: '100%' }}>
-        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} color='textPrimary' variant="h5">
+        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'0.5rem'} color='textPrimary' variant="h5">
           Lista tabel
         </Typography>
         <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '1rem' }}>

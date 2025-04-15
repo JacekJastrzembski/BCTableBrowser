@@ -1,6 +1,7 @@
 {
   "items": [
     {
+      "id": "278c",
       "name": "attachmentapi",
       "columns": [
         {
@@ -53,7 +54,7 @@
           "type": "DateTimeOffset"
         }
       ],
-      "id": "278c"
+      "isSynced": false
     },
     {
       "id": "5c71",
@@ -92,21 +93,23 @@
         },
         {
           "name": "comment",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": false
         },
         {
           "name": "companyName",
           "type": "String",
-          "isSynced": true
+          "isSynced": false
         },
         {
           "name": "companyNo",
           "type": "String",
-          "isSynced": true
+          "isSynced": false
         },
         {
           "name": "contactBusinessRelation",
-          "type": "contactBusinessRelation"
+          "type": "contactBusinessRelation",
+          "isSynced": true
         },
         {
           "name": "correspondenceType",
@@ -120,263 +123,328 @@
         },
         {
           "name": "countryRegionCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "county",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "coupledToCRM",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "coupledToDataverse",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "currencyCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "dateOfLastInteraction",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": true
         },
         {
           "name": "durationMin",
-          "type": "Decimal"
+          "type": "Decimal",
+          "isSynced": true
         },
         {
           "name": "eMail",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "eMail2",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "estimatedValueLCY",
-          "type": "Decimal"
+          "type": "Decimal",
+          "isSynced": true
         },
         {
           "name": "excludeFromSegment",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "extensionNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "externalID",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "faxNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "firstName",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "itiCountryRegionCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "itiVATRegistrationNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "itiVATRegNoOrigCountryCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "image",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": true
         },
         {
           "name": "initials",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "jobTitle",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "languageCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "lastDateAttempted",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": true
         },
         {
           "name": "lastDateModified",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": true
         },
         {
           "name": "lastTimeModified",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "lookupContactNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "middleName",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "minor",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "mobilePhoneNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "name",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "name2",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "nextTaskDate",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": true
         },
         {
           "name": "no",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "noSeries",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "noOfBusinessRelations",
-          "type": "Int32"
+          "type": "Int32",
+          "isSynced": true
         },
         {
           "name": "noOfIndustryGroups",
-          "type": "Int32"
+          "type": "Int32",
+          "isSynced": true
         },
         {
           "name": "noOfInteractions",
-          "type": "Int32"
+          "type": "Int32",
+          "isSynced": true
         },
         {
           "name": "noOfJobResponsibilities",
-          "type": "Int32"
+          "type": "Int32",
+          "isSynced": true
         },
         {
           "name": "noOfMailingGroups",
-          "type": "Int32"
+          "type": "Int32",
+          "isSynced": true
         },
         {
           "name": "noOfOpportunities",
-          "type": "Int32"
+          "type": "Int32",
+          "isSynced": true
         },
         {
           "name": "opportunityEntryExists",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "organizationalLevelCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "pager",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "parentalConsentReceived",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "phoneNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "postCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "privacyBlocked",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "registrationNumber",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "salespersonCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "salutationCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "searchEMail",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "searchName",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "surname",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "systemCreatedAt",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": true
         },
         {
           "name": "systemCreatedBy",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": true
         },
         {
           "name": "systemModifiedAt",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": true
         },
         {
           "name": "systemModifiedBy",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": true
         },
         {
           "name": "taskEntryExists",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": true
         },
         {
           "name": "telexAnswerBack",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "telexNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "territoryCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "type",
-          "type": "contactType"
+          "type": "contactType",
+          "isSynced": true
         },
         {
           "name": "vatRegistrationNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         },
         {
           "name": "xrmId",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": true
         },
         {
           "name": "EmailWOK",
-          "type": "String"
+          "type": "String",
+          "isSynced": true
         }
       ],
       "isSynced": false

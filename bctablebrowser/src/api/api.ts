@@ -12,7 +12,7 @@ export const getSynchronizableTables = async (): Promise<Table[]> => {
   }
 };
 
-export const saveSynchronizableTables = async (payload: UpdateTable): Promise<Table> => {
+export const saveSynchronizableTables = async (payload: UpdateTable): Promise<void> => {
   try {
     const response = await fetch('http://localhost:3001/api/BCSync/SaveSynchronizableTables', {
       method: 'POST',
@@ -25,20 +25,29 @@ export const saveSynchronizableTables = async (payload: UpdateTable): Promise<Ta
     if (!response.ok) {
       throw new Error(`Błąd HTTP przy zapisywaniu danych. Status: ${response.status}`);
     }
-    const updatedTable: Table = await response.json();
-    return updatedTable;
   } catch (error) {
     console.error('Błąd w funkcji saveSynchronizableTable:', error);
     throw error;
   }
 };
-export const saveJsonTableData = async (id: string, payload: ItemsToSave) => {
+
+export const saveJsonTableData = async (name: string, payload: ItemsToSave) => {
   try {
-    const updateData = await fetch(`http://localhost:3001/items/${id}`, {
+    const response = await fetch(`http://localhost:3001/items?name=${name}`);
+    if (!response.ok) {
+      throw new Error(`Błąd HTTP przy pobieraniu danych. Status: ${response.status}`);
+    }
+    const [foundItem] = await response.json();
+
+    if (!foundItem) {
+      throw new Error(`Nie znaleziono rekordu z nazwą: ${name}`);
+    }
+
+    const updateData = await fetch(`http://localhost:3001/items/${foundItem.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        id,
+        ...foundItem,
         ...payload,
       }),
     });
@@ -47,7 +56,6 @@ export const saveJsonTableData = async (id: string, payload: ItemsToSave) => {
       throw new Error(`Błąd HTTP przy zapisywaniu danych. Status: ${updateData.status}`);
     }
 
-    return await updateData.json();
   } catch (error) {
     console.error('Błąd w funkcji saveJsonTableData:', error);
     throw error;

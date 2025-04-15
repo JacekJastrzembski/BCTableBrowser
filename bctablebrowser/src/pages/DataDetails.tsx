@@ -1,8 +1,9 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Checkbox, Snackbar, Stack, Tooltip, Typography } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { ItemsToSave, saveSynchronizableTables, Table, UpdateTable, saveJsonTableData } from '../api/api';
+import { useEffect, useState } from 'react';
+import { ItemsToSave, Table, UpdateTable } from '../api/api';
+import { TableService } from '../api/TableService';
 
 export default function DataDetails() {
   const navigate = useNavigate();
@@ -20,7 +21,10 @@ export default function DataDetails() {
     type: 'success',
     message: '',
   });
-  const useJsonData = import.meta.env.VITE_USE_JSON_DATA === 'true' ? true : false;
+
+  const showSnackbar = (type: 'success' | 'error', message: string) => {
+    setSnackbar({ open: true, type, message });
+  };
 
   if (!table) {
     return <Typography color="error">Tabela nie została przekazana.</Typography>;
@@ -61,7 +65,7 @@ export default function DataDetails() {
       ),
     },
   ];
-
+  
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, row: any) => {
     setEditedSync((prev) => ({
       ...prev,
@@ -77,11 +81,7 @@ export default function DataDetails() {
     const hasColumnChanges = Object.keys(editedSync).length > 0;
 
     if (!hasColumnChanges) {
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: 'Brak zmian do zapisania.',
-      });
+      showSnackbar('error', 'Brak zmian do zapisania.');
       return;
     }
 
@@ -96,75 +96,58 @@ export default function DataDetails() {
     };
 
     try {
-      if (!useJsonData) {
-        const updatedTable = await saveSynchronizableTables(payload);
-        setTable(updatedTable);
-      } else {
-        if (!table.id) {
-          throw new Error('Table ID is undefined.');
-        }
-        const updatedTable = await saveJsonTableData(table.id, tableData);
-        setTable(updatedTable);
-      }
-      setSnackbar({
-        open: true,
-        type: 'success',
-        message: 'Dane zapisane pomyślnie!',
-      });
+      await TableService.saveTable(payload);
+      const updatedTable = { ...table, columns: updatedColumns, isSynced: table.isSynced };
+      setTable(updatedTable);
+      showSnackbar('success', 'Dane zapisane pomyślnie!');
       setEditedSync({});
       setTimeout(() => {
         navigate('/tables');
-      }, 500);
+      }, 700);
     } catch (error) {
       console.error('Nie udało się zapisać danych:', error);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: 'Nie udało się zapisać danych.',
-      });
+      showSnackbar('error', 'Nie udało się zapisać danych.');
     }
   };
 
-  const handleSyncToggle = async () => {
+  const handleSyncToggle = () => {
     const newSync = !table.isSynced;
 
-    const tableData: ItemsToSave = {
-      name: table.name,
-      columns: table.columns,
+    setTable((prevTable) => ({
+      ...prevTable,
       isSynced: newSync,
-    };
-
-    const payload: UpdateTable = {
-      itemsToSave: [tableData],
-    };
-
-    try {
-      if (!useJsonData) {
-        const updatedTable = await saveSynchronizableTables(payload);
-        setTable(updatedTable);
-      } else {
-        if (!table.id) {
-          throw new Error('Table ID is undefined.');
-        }
-        const updatedTable = await saveJsonTableData(table.id, tableData);
-        setTable(updatedTable);
-      }
-      setSnackbar({
-        open: true,
-        type: 'success',
-        message: newSync
-          ? `Udało się włączyć synchronizację tabelki ${table.name}!`
-          : `Udało się wyłączyć synchronizację tabelki ${table.name}!`
-      });
-    } catch (error) {
-      console.error('Nie udało się zapisać synchronizacji:', error);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: 'Nie udało się zapisać synchronizacji.',
-      });
-    }
+    }));
+  
+    setEditedSync((prev) => ({
+      ...prev,
+      [table.name]: {
+        ...table,
+        isSynced: newSync,
+      },
+    }));
+    setSnackbar({
+      open: true,
+      type: 'success',
+      message: newSync
+        ? `Udało się włączyć synchronizację tabelki ${table.name}!`
+        : `Udało się wyłączyć synchronizację tabelki ${table.name}!`,
+    });
   };
+  // useEffect(() => {
+  //   if (table.isSynced !== locTable.table.isSynced) {
+  //     handleSave();
+  //   }
+  // }, [table.isSynced]);
+
+  // const handleSyncChange = async () => {
+  //   try {
+  //     handleSyncToggle();
+  //     showSnackbar('success', 'Stan synchronizacji został pomyślnie zmieniony.');
+  //   } catch (error) {
+  //     console.error('Nie udało się zmienić i zapisać stanu synchronizacji:', error);
+  //     showSnackbar('error', 'Nie udało się zmienić i zapisać stanu synchronizacji.');
+  //   }
+  // };
 
   const handleReset = () => {
     setEditedSync({});
@@ -178,10 +161,29 @@ export default function DataDetails() {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
+  // Potrzebne do zmiany wyświetlania przycisku "Zaznacz wszystkie / Odznacz wszystkie"
+  const allSelected = table.columns.every(
+    (col) => editedSync[col.name]?.isSynced ?? col.isSynced
+  );
+
+  const handleSelectAllColumns = () => {
+    const allSelected = table.columns.every(
+      (col) => editedSync[col.name]?.isSynced ?? col.isSynced
+    );
+
+    const updatedColumns = Object.fromEntries(
+      table.columns.map((col) => [
+        col.name,
+        { ...col, isSynced: !allSelected },
+      ])
+    );
+    setEditedSync(updatedColumns);
+  };
+
   return (
-    <div className="container" style={{ marginLeft: '1rem', padding: '1rem', paddingTop: '0rem' }}>
+    <div className="container" style={{ marginLeft: '1rem',  paddingTop: '0rem' }}>
       <Box sx={{ width: '100%' }}>
-        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'1rem'} variant="h5">
+        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'0.5rem'} variant="h5">
           Szczegóły tabeli: <Typography component="span" variant="h5" sx={{ fontWeight: "bold", color: (theme) => theme.palette.secondary.main }}>{tableName}</Typography>
         </Typography>
         <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '1rem' }}>
@@ -204,6 +206,7 @@ export default function DataDetails() {
                 variant="contained"
                 color="error"
                 onClick={handleSyncToggle}
+                // onClick={handleSyncChange}
               >
                 Wyłącz synchronizację
               </Button>
@@ -215,6 +218,7 @@ export default function DataDetails() {
                 variant="contained"
                 color="success"
                 onClick={handleSyncToggle}
+                // onClick={handleSyncChange}
               >
                 Włącz synchronizację
               </Button>
@@ -229,9 +233,14 @@ export default function DataDetails() {
               Zapisz
             </Button>
           </Stack>
+          <Stack direction="row" spacing={2}>
+          <Button sx={{ fontWeight: "bold" }} type="button" variant="outlined" color="inherit" onClick={handleSelectAllColumns}>
+          {allSelected ? 'Odznacz wszystkie' : 'Zaznacz wszystkie'}
+          </Button>
           <Button sx={{ fontWeight: "bold" }} type="button" variant="text" color="warning" onClick={handleReset}>
             Przywróć poprzednie wartości
           </Button>
+          </Stack>
         </Stack>
       </Box>
       <Snackbar
