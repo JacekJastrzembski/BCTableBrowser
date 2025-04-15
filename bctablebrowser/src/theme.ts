@@ -29,13 +29,13 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     success: {
-      main: green[700],
-      dark: green[900], 
+      main: green[600],
+      dark: green[800], 
       contrastText: "#000",
     },
     error: {
-      main: red[700],
-      dark: red[900],
+      main: red[600],
+      dark: red[800],
       contrastText: "#000",
     },
     background: {

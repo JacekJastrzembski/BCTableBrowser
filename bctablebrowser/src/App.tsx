@@ -25,16 +25,16 @@ function App() {
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <CssBaseline />
         <Router>
-          <Divider sx={{ position: 'absolute', top: 0, height: '55px', width: '100vw' }} />
+          <Divider sx={{ position: 'fixed', top: 0, height: '55px', width: '100vw', zIndex: 1100, }} />
           <Box
             sx={{
               display: 'flex',
               mt: '35px',
             }}
           >
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex'}}>
               <SideMenu darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-              <Box sx={{ flexGrow: 2, p: 3 }}>
+              <Box className="page-container" sx={{ flexGrow: 2, p: 3 }}>
                 <Routes>
                   <Route path="/" element={<Navigate to="/tables" replace />} />
                   <Route path="/tables" element={<DataList />} />
