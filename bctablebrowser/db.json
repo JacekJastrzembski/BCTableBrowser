@@ -455,23 +455,28 @@
       "columns": [
         {
           "name": "systemId",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "systemRowVersion",
-          "type": "Int64"
+          "type": "Int64",
+          "isSynced": false
         },
         {
           "name": "businessRelationCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "businessRelationDescription",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "contactName",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "contactNo",
@@ -480,15 +485,18 @@
         },
         {
           "name": "linkToTable",
-          "type": "contactBusinessRelationLinkToTable"
+          "type": "contactBusinessRelationLinkToTable",
+          "isSynced": false
         },
         {
           "name": "no",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "SystemModifiedAt",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": false
         }
       ],
       "isSynced": true

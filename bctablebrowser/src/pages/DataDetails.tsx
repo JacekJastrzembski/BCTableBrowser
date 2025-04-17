@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Alert, Box, Button, Checkbox, Snackbar, Stack, Tooltip, Typography } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ItemsToSave, Table, UpdateTable } from '../api/api';
 import { TableService } from '../api/TableService';
 
@@ -10,6 +10,7 @@ export default function DataDetails() {
   const { tableName } = useParams();
   const location = useLocation();
   const locTable = location.state as { table: Table };
+  const [initialTable] = useState<Table>(locTable.table);
   const [table, setTable] = useState<Table>(locTable.table);
   const [editedSync, setEditedSync] = useState<Record<string, any>>({});
   const [snackbar, setSnackbar] = useState<{
@@ -67,10 +68,19 @@ export default function DataDetails() {
   ];
   
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, row: any) => {
+    const isChecked = event.target.checked;
+
     setEditedSync((prev) => ({
       ...prev,
-      [row.name]: { ...row, isSynced: event.target.checked },
+      [row.name]: { ...row, isSynced: isChecked },
     }));
+    if (!table.isSynced && isChecked) {
+      setTable((prevTable) => ({
+        ...prevTable,
+        isSynced: true,
+      }));
+      showSnackbar('success', 'Synchronizacja tabeli została automatycznie włączona.');
+    }
   };
 
   const handleSave = async () => {
@@ -110,7 +120,7 @@ export default function DataDetails() {
     }
   };
 
-  const handleSyncToggle = () => {
+  const handleSyncToggle = async () => {
     const newSync = !table.isSynced;
 
     setTable((prevTable) => ({
@@ -118,49 +128,33 @@ export default function DataDetails() {
       isSynced: newSync,
     }));
   
-    setEditedSync((prev) => ({
-      ...prev,
-      [table.name]: {
-        ...table,
-        isSynced: newSync,
-      },
-    }));
-    setSnackbar({
-      open: true,
-      type: 'success',
-      message: newSync
-        ? `Udało się włączyć synchronizację tabelki ${table.name}!`
-        : `Udało się wyłączyć synchronizację tabelki ${table.name}!`,
-    });
-  };
-  // useEffect(() => {
-  //   if (table.isSynced !== locTable.table.isSynced) {
-  //     handleSave();
-  //   }
-  // }, [table.isSynced]);
-
-  // const handleSyncChange = async () => {
-  //   try {
-  //     handleSyncToggle();
-  //     showSnackbar('success', 'Stan synchronizacji został pomyślnie zmieniony.');
-  //   } catch (error) {
-  //     console.error('Nie udało się zmienić i zapisać stanu synchronizacji:', error);
-  //     showSnackbar('error', 'Nie udało się zmienić i zapisać stanu synchronizacji.');
-  //   }
-  // };
-
-  const handleReset = () => {
-    setEditedSync({});
-    setSnackbar((prev) => ({ ...prev, open: false }));
-  };
-
-  const handleSnackbarClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
+    const tableData: ItemsToSave = {
+      name: table.name,
+      columns: table.columns,
+      isSynced: newSync,
+    };
+  
+    const payload: UpdateTable = {
+      itemsToSave: [tableData],
+    };
+  
+    try {
+      await TableService.saveTable(payload);
+      showSnackbar(
+        'success',
+        newSync
+          ? `Udało się włączyć synchronizację tabelki ${table.name}!`
+          : `Udało się wyłączyć synchronizację tabelki ${table.name}!`
+      );
+    } catch (error) {
+      console.error('Nie udało się zapisać stanu synchronizacji:', error);
+      showSnackbar('error', 'Nie udało się zapisać stanu synchronizacji.');
+      setTable((prevTable) => ({
+        ...prevTable,
+        isSynced: !newSync,
+      }));
     }
-    setSnackbar((prev) => ({ ...prev, open: false }));
   };
-
   // Potrzebne do zmiany wyświetlania przycisku "Zaznacz wszystkie / Odznacz wszystkie"
   const allSelected = table.columns.every(
     (col) => editedSync[col.name]?.isSynced ?? col.isSynced
@@ -178,6 +172,27 @@ export default function DataDetails() {
       ])
     );
     setEditedSync(updatedColumns);
+    if (!table.isSynced && !allSelected) {
+      setTable((prevTable) => ({
+        ...prevTable,
+        isSynced: true,
+      }));
+  
+      showSnackbar('success', 'Synchronizacja tabeli została automatycznie włączona.');
+    }
+  };
+
+  const handleSnackbarClose = (_event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
+
+  const handleReset = () => {
+    setTable(initialTable);
+    setEditedSync({});
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
   return (
@@ -206,7 +221,6 @@ export default function DataDetails() {
                 variant="contained"
                 color="error"
                 onClick={handleSyncToggle}
-                // onClick={handleSyncChange}
               >
                 Wyłącz synchronizację
               </Button>
@@ -218,7 +232,6 @@ export default function DataDetails() {
                 variant="contained"
                 color="success"
                 onClick={handleSyncToggle}
-                // onClick={handleSyncChange}
               >
                 Włącz synchronizację
               </Button>
