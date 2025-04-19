@@ -94,12 +94,12 @@
         {
           "name": "comment",
           "type": "Boolean",
-          "isSynced": false
+          "isSynced": true
         },
         {
           "name": "companyName",
           "type": "String",
-          "isSynced": false
+          "isSynced": true
         },
         {
           "name": "companyNo",
@@ -204,12 +204,12 @@
         {
           "name": "itiVATRegistrationNo",
           "type": "String",
-          "isSynced": true
+          "isSynced": false
         },
         {
           "name": "itiVATRegNoOrigCountryCode",
           "type": "String",
-          "isSynced": true
+          "isSynced": false
         },
         {
           "name": "image",
@@ -219,7 +219,7 @@
         {
           "name": "initials",
           "type": "String",
-          "isSynced": true
+          "isSynced": false
         },
         {
           "name": "jobTitle",
@@ -447,7 +447,7 @@
           "isSynced": true
         }
       ],
-      "isSynced": false
+      "isSynced": true
     },
     {
       "id": "34b7",
@@ -499,7 +499,7 @@
           "isSynced": false
         }
       ],
-      "isSynced": true
+      "isSynced": false
     },
     {
       "id": "2cc7",
@@ -532,11 +532,13 @@
         },
         {
           "name": "isoCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "isoNumericCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "intrastatCode",
@@ -716,282 +718,352 @@
       "columns": [
         {
           "name": "no",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "systemRowVersion",
-          "type": "Int64"
+          "type": "Int64",
+          "isSynced": false
         },
         {
           "name": "address",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "address2",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "altAddressCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "altAddressEndDate",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": false
         },
         {
           "name": "altAddressStartDate",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": false
         },
         {
           "name": "applicationMethod",
-          "type": "applicationMethod"
+          "type": "applicationMethod",
+          "isSynced": false
         },
         {
           "name": "balance",
-          "type": "Decimal"
+          "type": "Decimal",
+          "isSynced": false
         },
         {
           "name": "bankAccountNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "bankBranchNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "birthDate",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": false
         },
         {
           "name": "cardNFCDecimal",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "cardNFCNumber",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "cardOptimaNumber",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "cardRFIDNumber",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "causeOfInactivityCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "city",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "comment",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": false
         },
         {
           "name": "companyEMail",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "costCenterCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "costObjectCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "countryRegionCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "county",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "eMail",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "employeePostingGroup",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "employmentDate",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": false
         },
         {
           "name": "emplymtContractCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "extension",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "faxNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "firstName",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "gender",
-          "type": "employeeGender"
+          "type": "employeeGender",
+          "isSynced": false
         },
         {
           "name": "globalDimension1Code",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "globalDimension2Code",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "groundsForTermCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "iban",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "image",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "inactiveDate",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": false
         },
         {
           "name": "initials",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "jobTitle",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "lastDateModified",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": false
         },
         {
           "name": "lastModifiedDateTime",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": false
         },
         {
           "name": "lastName",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "managerNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "middleName",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "mobilePhoneNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "noSeries",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "pager",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "phoneNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "postCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "praId",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "privacyBlocked",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": false
         },
         {
           "name": "resourceNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "swiftCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "salespersPurchCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "searchName",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "socialSecurityNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "statisticsGroupCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "status",
-          "type": "employeeStatus"
+          "type": "employeeStatus",
+          "isSynced": false
         },
         {
           "name": "systemCreatedAt",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": false
         },
         {
           "name": "systemCreatedBy",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "systemId",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "systemModifiedAt",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": false
         },
         {
           "name": "systemModifiedBy",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "terminationDate",
-          "type": "Date"
+          "type": "Date",
+          "isSynced": false
         },
         {
           "name": "title",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "totalAbsenceBase",
-          "type": "Decimal"
+          "type": "Decimal",
+          "isSynced": false
         },
         {
           "name": "unionCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "unionMembershipNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         }
       ],
-      "id": "d66e"
+      "id": "d66e",
+      "isSynced": false
     }
   ]
 }

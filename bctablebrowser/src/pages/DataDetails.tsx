@@ -1,5 +1,5 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Alert, Box, Button, Checkbox, Snackbar, Stack, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Button, Checkbox, CircularProgress, Snackbar, Stack, Tooltip, Typography } from '@mui/material';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { ItemsToSave, Table, UpdateTable } from '../api/api';
@@ -13,6 +13,7 @@ export default function DataDetails() {
   const [initialTable] = useState<Table>(locTable.table);
   const [table, setTable] = useState<Table>(locTable.table);
   const [editedSync, setEditedSync] = useState<Record<string, any>>({});
+  const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     type: 'success' | 'error';
@@ -66,7 +67,7 @@ export default function DataDetails() {
       ),
     },
   ];
-  
+
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>, row: any) => {
     const isChecked = event.target.checked;
 
@@ -84,6 +85,7 @@ export default function DataDetails() {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     const updatedColumns = table.columns.map((column) =>
       editedSync[column.name] ? editedSync[column.name] : column
     );
@@ -92,6 +94,7 @@ export default function DataDetails() {
 
     if (!hasColumnChanges) {
       showSnackbar('error', 'Brak zmian do zapisania.');
+      setLoading(false);
       return;
     }
 
@@ -117,7 +120,10 @@ export default function DataDetails() {
     } catch (error) {
       console.error('Nie udało się zapisać danych:', error);
       showSnackbar('error', 'Nie udało się zapisać danych.');
+    } finally {
+      setLoading(false);
     }
+
   };
 
   const handleSyncToggle = async () => {
@@ -127,17 +133,17 @@ export default function DataDetails() {
       ...prevTable,
       isSynced: newSync,
     }));
-  
+
     const tableData: ItemsToSave = {
       name: table.name,
       columns: table.columns,
       isSynced: newSync,
     };
-  
+
     const payload: UpdateTable = {
       itemsToSave: [tableData],
     };
-  
+
     try {
       await TableService.saveTable(payload);
       showSnackbar(
@@ -177,7 +183,7 @@ export default function DataDetails() {
         ...prevTable,
         isSynced: true,
       }));
-  
+
       showSnackbar('success', 'Synchronizacja tabeli została automatycznie włączona.');
     }
   };
@@ -196,97 +202,114 @@ export default function DataDetails() {
   };
 
   return (
-    <div className="container" style={{ marginLeft: '1rem',  paddingTop: '0rem' }}>
-      <Box sx={{ width: '100%' }}>
-        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'0.5rem'} variant="h5">
-          Szczegóły tabeli: <Typography component="span" variant="h5" sx={{ fontWeight: "bold", color: (theme) => theme.palette.secondary.main }}>{tableName}</Typography>
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '1rem' }}>
-          <div style={{ width: '100%', maxHeight: '74dvh' }}>
-            <DataGrid
-              rows={table.columns}
-              columns={columns}
-              getRowId={(row) => row.name}
-              checkboxSelection={false}
-            />
-          </div>
-        </Stack>
-        <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
-          <Stack direction="row" spacing={2}>
-            {table.isSynced 
-            ? (
-              <Button
-                sx={{ border: 1, fontWeight: "bold", }}
-                type="button"
-                variant="contained"
-                color="error"
-                onClick={handleSyncToggle}
-              >
-                Wyłącz synchronizację
-              </Button>
-            ) 
-            : (
+      <div className="container" style={{ marginLeft: '1rem', paddingTop: '0rem' }}>
+        <Box sx={{ width: '100%' }}>
+          <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'0.5rem'} variant="h5">
+            Szczegóły tabeli: <Typography component="span" variant="h5" sx={{ fontWeight: "bold", color: (theme) => theme.palette.secondary.main }}>{tableName}</Typography>
+          </Typography>
+          <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '1rem' }}>
+            <div style={{ width: '100%', maxHeight: '74dvh' }}>
+              <DataGrid
+                rows={table.columns}
+                columns={columns}
+                getRowId={(row) => row.name}
+                checkboxSelection={false}
+              />
+            </div>
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
+            <Stack direction="row" spacing={2}>
+              {table.isSynced
+                ? (
+                  <Button
+                    sx={{ border: 1, fontWeight: "bold", }}
+                    type="button"
+                    variant="contained"
+                    color="error"
+                    onClick={handleSyncToggle}
+                  >
+                    Wyłącz synchronizację
+                  </Button>
+                )
+                : (
+                  <Button
+                    sx={{ border: 1, fontWeight: "bold" }}
+                    type="button"
+                    variant="contained"
+                    color="success"
+                    onClick={handleSyncToggle}
+                  >
+                    Włącz synchronizację
+                  </Button>
+                )}
               <Button
                 sx={{ border: 1, fontWeight: "bold" }}
-                type="button"
+                type="submit"
                 variant="contained"
-                color="success"
-                onClick={handleSyncToggle}
+                color="info"
+                onClick={handleSave}
               >
-                Włącz synchronizację
+                Zapisz
               </Button>
-            )}
-            <Button
-              sx={{ border: 1, fontWeight: "bold" }}
-              type="submit"
-              variant="contained"
-              color="info"
-              onClick={handleSave}
-            >
-              Zapisz
-            </Button>
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <Button sx={{ fontWeight: "bold" }} type="button" variant="outlined" color="inherit" onClick={handleSelectAllColumns}>
+                {allSelected ? 'Odznacz wszystkie' : 'Zaznacz wszystkie'}
+              </Button>
+              <Button sx={{ fontWeight: "bold" }} type="button" variant="text" color="warning" onClick={handleReset}>
+                Przywróć poprzednie wartości
+              </Button>
+            </Stack>
           </Stack>
-          <Stack direction="row" spacing={2}>
-          <Button sx={{ fontWeight: "bold" }} type="button" variant="outlined" color="inherit" onClick={handleSelectAllColumns}>
-          {allSelected ? 'Odznacz wszystkie' : 'Zaznacz wszystkie'}
-          </Button>
-          <Button sx={{ fontWeight: "bold" }} type="button" variant="text" color="warning" onClick={handleReset}>
-            Przywróć poprzednie wartości
-          </Button>
-          </Stack>
-        </Stack>
-      </Box>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
+        </Box>
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={3000}
           onClose={handleSnackbarClose}
-          severity={snackbar.type}
-          sx={(theme) => ({
-            width: '100%',
-            // fontWeight: 'bold',
-            backgroundColor:
-              snackbar.type === 'success'
-                ? theme.palette.success.main
-                : theme.palette.error.main,
-            color:
-              snackbar.type === 'success'
-                ? theme.palette.success.contrastText
-                : theme.palette.error.contrastText,
-            '& .MuiAlert-icon': {
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={snackbar.type}
+            sx={(theme) => ({
+              width: '100%',
+              backgroundColor:
+                snackbar.type === 'success'
+                  ? theme.palette.success.main
+                  : theme.palette.error.main,
               color:
                 snackbar.type === 'success'
                   ? theme.palette.success.contrastText
                   : theme.palette.error.contrastText,
-            },
-          })}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </div>
+              '& .MuiAlert-icon': {
+                color:
+                  snackbar.type === 'success'
+                    ? theme.palette.success.contrastText
+                    : theme.palette.error.contrastText,
+              },
+            })}
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+        {loading && (
+          <Box
+            sx={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 1300,
+            }}
+          >
+            <CircularProgress size={60} color="inherit" />
+          </Box>
+        )}
+      </div>
   );
 }
