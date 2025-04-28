@@ -76,6 +76,24 @@ export const getJsonData = async (): Promise<Table[]> => {
   }
 };
 
+export const resetTableData = async (tableName: string): Promise<void> => {
+  try {
+    const response = await fetch(`http://localhost:3001/api/BCApi/ResetTableData/${tableName}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Błąd HTTP przy czyszczeniu danych tabeli. Status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Błąd w funkcji resetTableData:', error);
+    throw error;
+  }
+};
+
 export interface Table {
   id?: string;
   name: string;
@@ -85,6 +103,9 @@ export interface Table {
     isSynced?: boolean;
     configurationError?: string;
   }>;
+  rowsCount?: number;
+  lastUpdateDateTime?: Date;
+  version?: number;
   isSynced?: boolean;
   configurationError?: string;
 }

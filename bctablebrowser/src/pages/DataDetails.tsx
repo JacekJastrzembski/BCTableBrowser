@@ -201,115 +201,139 @@ export default function DataDetails() {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
+  const handleResetTableData = async () => {
+    setLoading(true);
+    try {
+      await TableService.resetTableData(tableName!);
+      showSnackbar('success', `Dane tabeli ${tableName} zostały wyczyszczone.`);
+    } catch (error) {
+      console.error('Błąd podczas czyszczenia danych tabeli:', error);
+      showSnackbar('error', `Nie udało się wyczyścić danych tabeli ${tableName}.`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-      <div className="container" style={{ marginLeft: '1rem', paddingTop: '0rem' }}>
-        <Box sx={{ width: '100%' }}>
-          <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'0.5rem'} variant="h5">
-            Szczegóły tabeli: <Typography component="span" variant="h5" sx={{ fontWeight: "bold", color: (theme) => theme.palette.secondary.main }}>{tableName}</Typography>
-          </Typography>
-          <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '1rem' }}>
-            <div style={{ width: '100%', maxHeight: '74dvh' }}>
-              <DataGrid
-                rows={table.columns}
-                columns={columns}
-                getRowId={(row) => row.name}
-                checkboxSelection={false}
-              />
-            </div>
+    <div className="container" style={{ marginLeft: '1rem', paddingTop: '0rem' }}>
+      <Box sx={{ width: '100%' }}>
+        <Typography sx={{ color: (theme) => theme.palette.secondary.light }} marginBottom={'0.5rem'} variant="h5">
+          Szczegóły tabeli: <Typography component="span" variant="h5" sx={{ fontWeight: "bold", color: (theme) => theme.palette.secondary.main }}>{tableName}</Typography>
+        </Typography>
+        <Stack direction="row" spacing={1} sx={{ mb: 1, paddingTop: '0.5rem' }}>
+          <div style={{ width: '100%', maxHeight: '72dvh' }}>
+            <DataGrid
+              rows={table.columns}
+              columns={columns}
+              getRowId={(row) => row.name}
+              checkboxSelection={false}
+            />
+          </div>
+        </Stack>
+        <Stack direction="row" spacing={2} sx={{ mt: 1.5, justifyContent: 'space-between' }}>
+          <Stack direction="row" spacing={2}>
+            {table.isSynced
+              ? (
+                <Button
+                  sx={{ border: 1, fontWeight: "bold", }}
+                  type="button"
+                  variant="contained"
+                  color="error"
+                  onClick={handleSyncToggle}
+                >
+                  Wyłącz synchronizację
+                </Button>
+              )
+              : (
+                <Button
+                  sx={{ border: 1, fontWeight: "bold" }}
+                  type="button"
+                  variant="contained"
+                  color="success"
+                  onClick={handleSyncToggle}
+                >
+                  Włącz synchronizację
+                </Button>
+              )}
+            <Button
+              sx={{ border: 1, fontWeight: "bold" }}
+              type="submit"
+              variant="contained"
+              color="info"
+              onClick={handleSave}
+            >
+              Zapisz
+            </Button>
           </Stack>
-          <Stack direction="row" spacing={2} sx={{ mt: 2, justifyContent: 'space-between' }}>
-            <Stack direction="row" spacing={2}>
-              {table.isSynced
-                ? (
-                  <Button
-                    sx={{ border: 1, fontWeight: "bold", }}
-                    type="button"
-                    variant="contained"
-                    color="error"
-                    onClick={handleSyncToggle}
-                  >
-                    Wyłącz synchronizację
-                  </Button>
-                )
-                : (
-                  <Button
-                    sx={{ border: 1, fontWeight: "bold" }}
-                    type="button"
-                    variant="contained"
-                    color="success"
-                    onClick={handleSyncToggle}
-                  >
-                    Włącz synchronizację
-                  </Button>
-                )}
-              <Button
-                sx={{ border: 1, fontWeight: "bold" }}
-                type="submit"
-                variant="contained"
-                color="info"
-                onClick={handleSave}
-              >
-                Zapisz
-              </Button>
-            </Stack>
-            <Stack direction="row" spacing={2}>
-              <Button sx={{ fontWeight: "bold" }} type="button" variant="outlined" color="inherit" onClick={handleSelectAllColumns}>
-                {allSelected ? 'Odznacz wszystkie' : 'Zaznacz wszystkie'}
-              </Button>
-              <Button sx={{ fontWeight: "bold" }} type="button" variant="text" color="warning" onClick={handleReset}>
-                Przywróć poprzednie wartości
-              </Button>
-            </Stack>
+          <Stack direction="row" spacing={2}>
+            <Button sx={{ fontWeight: "bold" }} type="button" variant="outlined" color="inherit" onClick={handleSelectAllColumns}>
+              {allSelected ? 'Odznacz wszystkie' : 'Zaznacz wszystkie'}
+            </Button>
+            <Button sx={{ fontWeight: "bold" }} type="button" variant="text" color="warning" onClick={handleReset}>
+              Przywróć poprzednie wartości
+            </Button>
           </Stack>
-        </Box>
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={3000}
+        </Stack>
+        <Stack direction="row" spacing={2} sx={{ mt: 1.5, justifyContent: 'space-between' }}>
+          <Button
+            sx={{ border: 1, fontWeight: "bold" }}
+            type="button"
+            variant="contained"
+            color="warning"
+            onClick={handleResetTableData}
+          >
+            Wyczyść dane tabeli
+          </Button>
+        </Stack>
+      </Box>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert
           onClose={handleSnackbarClose}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <Alert
-            onClose={handleSnackbarClose}
-            severity={snackbar.type}
-            sx={(theme) => ({
-              width: '100%',
-              backgroundColor:
-                snackbar.type === 'success'
-                  ? theme.palette.success.main
-                  : theme.palette.error.main,
+          severity={snackbar.type}
+          sx={(theme) => ({
+            width: '100%',
+            backgroundColor:
+              snackbar.type === 'success'
+                ? theme.palette.success.main
+                : theme.palette.error.main,
+            color:
+              snackbar.type === 'success'
+                ? theme.palette.success.contrastText
+                : theme.palette.error.contrastText,
+            '& .MuiAlert-icon': {
               color:
                 snackbar.type === 'success'
                   ? theme.palette.success.contrastText
                   : theme.palette.error.contrastText,
-              '& .MuiAlert-icon': {
-                color:
-                  snackbar.type === 'success'
-                    ? theme.palette.success.contrastText
-                    : theme.palette.error.contrastText,
-              },
-            })}
-          >
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
-        {loading && (
-          <Box
-            sx={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 1300,
-            }}
-          >
-            <CircularProgress size={60} color="inherit" />
-          </Box>
-        )}
-      </div>
+            },
+          })}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+      {loading && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1300,
+          }}
+        >
+          <CircularProgress size={60} color="inherit" />
+        </Box>
+      )}
+    </div>
   );
 }

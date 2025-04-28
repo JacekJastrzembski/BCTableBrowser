@@ -3,6 +3,9 @@
     {
       "id": "278c",
       "name": "attachmentapi",
+      "rowsCount": 15,
+      "lastUpdateDateTime": "2025-04-28T12:34:56.6303115",
+      "version": 10.1,
       "columns": [
         {
           "name": "systemId",
@@ -584,134 +587,167 @@
       "columns": [
         {
           "name": "systemId",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "systemRowVersion",
-          "type": "Int64"
+          "type": "Int64",
+          "isSynced": false
         },
         {
           "name": "address",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "address2",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "bankAccountNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "bankBranchNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "bankClearingCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "bankClearingStandard",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "city",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "code",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "contact",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "countryRegionCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "county",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "currencyCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "customerNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "eMail",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "faxNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "iban",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "itiFactoring",
-          "type": "Boolean"
+          "type": "Boolean",
+          "isSynced": false
         },
         {
           "name": "languageCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "name",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "name2",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "phoneNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "postCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "swiftCode",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "systemCreatedAt",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": false
         },
         {
           "name": "systemCreatedBy",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "systemModifiedAt",
-          "type": "DateTimeOffset"
+          "type": "DateTimeOffset",
+          "isSynced": false
         },
         {
           "name": "systemModifiedBy",
-          "type": "Guid"
+          "type": "Guid",
+          "isSynced": false
         },
         {
           "name": "telexAnswerBack",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "telexNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         },
         {
           "name": "transitNo",
-          "type": "String"
+          "type": "String",
+          "isSynced": false
         }
       ],
-      "id": "4505"
+      "id": "4505",
+      "isSynced": false
     },
     {
       "name": "employee",

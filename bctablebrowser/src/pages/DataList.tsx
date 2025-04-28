@@ -33,11 +33,32 @@ export default function DataList() {
 
   const columns: GridColDef[] = [
     { field: 'name', headerName: 'Nazwa tabeli', width: 350 },
-    { field: 'columns', headerName: 'Liczba kolumn', width: 200 },
+    { field: 'columns', headerName: 'Liczba kolumn', width: 150, align: 'right',  },
+    { field: 'rowsCount', headerName: 'Liczba rekordów', width: 150, align: 'right', },
+    {
+      field: 'lastUpdateDateTime',
+      headerName: 'Data ostatniego pobrania',
+      width: 200,
+      renderCell: (params) => {
+        if (!params.value) return ' ';
+        const date = new Date(params.value);
+        const formattedDate = date.toLocaleString('pl-PL', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        });
+        return <span>{formattedDate}</span>;
+      },
+    },
+    { field: 'version', headerName: 'Wersja', width: 150, align: 'right', },
     {
       field: 'isSynced',
       headerName: 'Synchronizowana?',
-      width: 200,
+      width: 170,
+      // align: 'center',
       renderCell: (params) => (
         <Checkbox checked={params.value} readOnly color='secondary' />
       ),
@@ -47,6 +68,9 @@ export default function DataList() {
   const rows = tables.map((table: Table) => ({
     name: table.name,
     columns: table.columns ? table.columns.length : 0,
+    rowsCount: table.rowsCount,
+    lastUpdateDateTime: table.lastUpdateDateTime,
+    version: table.version,
     isSynced: table.isSynced,
   }));
 

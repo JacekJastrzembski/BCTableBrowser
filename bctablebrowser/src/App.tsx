@@ -34,7 +34,7 @@ function App() {
           >
             <Box sx={{ display: 'flex'}}>
               <SideMenu darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-              <Box className="page-container" sx={{ flexGrow: 2, p: 3 }}>
+              <Box className="page-container" sx={{ flexGrow: 2, p: 2 }}>
                 <Routes>
                   <Route path="/" element={<Navigate to="/tables" replace />} />
                   <Route path="/tables" element={<DataList />} />

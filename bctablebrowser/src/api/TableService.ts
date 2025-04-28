@@ -1,5 +1,5 @@
 import { getJsonData, saveJsonTableData, getSynchronizableTables, 
-    saveSynchronizableTables, Table, UpdateTable } from './api';
+    saveSynchronizableTables, Table, UpdateTable, resetTableData} from './api';
 
 const useJsonData = import.meta.env.VITE_USE_JSON_DATA === 'true'
 
@@ -38,4 +38,17 @@ export const TableService = {
         throw error;
       }
     },
+
+    async resetTableData(tableName: string): Promise<void> {
+      try {
+        if (!tableName) {
+          throw new Error('Nazwa tabeli jest wymagana');
+        }
+          await resetTableData(tableName);
+      } catch (error) {
+        console.error('Błąd podczas resetowania danych tabeli:', error);
+        throw error;
+      }
+    },
+    
   };
